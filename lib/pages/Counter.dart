@@ -27,58 +27,60 @@ class _CounterState extends State<Counter> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          widget.title,
-          style: TextStyle(fontSize: 16),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Container(
-          margin: const EdgeInsets.all(15.0),
-          height: 48.0,
-          decoration: BoxDecoration(
-            border: Border.all(width: 3, color: const Color(0xFF69B7FF)),
-            borderRadius: BorderRadius.circular(10.0),
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            widget.title,
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
-                onTap: _decrementCounter,
-                child: Container(
-                  color: const Color(0xFF69B7FF),
-                  width: 48,
-                  alignment: Alignment.center,
-                  child: const Icon(
-                    Icons.remove,
-                    size: 24.0,
+          const SizedBox(
+            height: 8.5,
+          ),
+          Container(
+            height: 60.0,
+            decoration: BoxDecoration(
+              border: Border.all(width: 3, color: const Color(0xFF69B7FF)),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: _decrementCounter,
+                  child: Container(
+                    color: const Color(0xFF69B7FF),
+                    width: 48,
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.remove,
+                      size: 24.0,
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                '$_counter',
-                style: const TextStyle(fontSize: 22.0),
-              ),
-              InkWell(
-                onTap: _incrementCounter,
-                child: Container(
-                  color: const Color(0xFF69B7FF),
-                  width: 48.0,
-                  alignment: Alignment.center,
-                  child: const Icon(
-                    Icons.add,
-                    size: 24.0,
+                Text(
+                  '$_counter',
+                  style: const TextStyle(fontSize: 22.0),
+                ),
+                InkWell(
+                  onTap: _incrementCounter,
+                  child: Container(
+                    color: const Color(0xFF69B7FF),
+                    width: 48.0,
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.add,
+                      size: 24.0,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
