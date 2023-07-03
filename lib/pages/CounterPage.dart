@@ -1,8 +1,7 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-
-import 'Counter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CounterPage extends StatefulWidget {
   const CounterPage({super.key});
@@ -49,6 +48,10 @@ class _CounterPageState extends State<CounterPage> {
           buildCounter("Pillow Covers"),
           buildCounter("Bedsheets"),
           buildCounter("Others"),
+          buildTotalBar(),
+          const SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );
@@ -122,6 +125,34 @@ class _CounterPageState extends State<CounterPage> {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //The total cothes bar at the bottom of the screen
+  Widget buildTotalBar() {
+    int total = 0;
+    for (var element in clothes.entries) {
+      total += element.value;
+    }
+    return Padding(
+      padding: const EdgeInsets.only(
+          top: 20.0, bottom: 20.0, left: 15.0, right: 15.0),
+      child: Row(
+        children: [
+          const Text(
+            "TOTAL:",
+            style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+          ),
+          Text(
+            '$total',
+            style: const TextStyle(
+                fontSize: 27, fontWeight: FontWeight.bold, color: Colors.blue),
           ),
         ],
       ),
