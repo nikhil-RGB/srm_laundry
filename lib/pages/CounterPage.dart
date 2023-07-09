@@ -94,11 +94,12 @@ class _CounterPageState extends State<CounterPage> {
                   },
                   child: Container(
                     color: const Color(0xFF69B7FF),
-                    width: 48,
+                    width: 55,
                     alignment: Alignment.center,
                     child: const Icon(
                       Icons.remove,
-                      size: 24.0,
+                      size: 16.0,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -115,11 +116,12 @@ class _CounterPageState extends State<CounterPage> {
                   },
                   child: Container(
                     color: const Color(0xFF69B7FF),
-                    width: 48.0,
+                    width: 55.0,
                     alignment: Alignment.center,
                     child: const Icon(
                       Icons.add,
-                      size: 24.0,
+                      size: 16.0,
+                      color: Colors.white,
                     ),
                   ),
                 ),
