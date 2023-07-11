@@ -49,6 +49,7 @@ class _CounterPageState extends State<CounterPage> {
           buildCounter("Bedsheets"),
           buildCounter("Others"),
           buildTotalBar(),
+          buildSave(),
           const SizedBox(
             height: 10,
           ),
@@ -158,6 +159,20 @@ class _CounterPageState extends State<CounterPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Container buildSave() {
+    return Container(
+      margin: EdgeInsets.all(10.0),
+      child: ElevatedButton(
+          onPressed: () {},
+          child: Center(
+            child: Text(
+              "Save",
+              style: TextStyle(fontSize: 20),
+            ),
+          )),
     );
   }
 }
