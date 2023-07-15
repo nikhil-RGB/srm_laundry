@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,8 +31,14 @@ class _CounterPageState extends State<CounterPage> {
     return Scaffold(
       backgroundColor: darkMode ? darkModeBg : lightModeBg,
       appBar: AppBar(
-        leading:
-            IconButton(onPressed: () {}, icon: const Icon(Icons.menu_outlined)),
+        elevation: 0,
+        backgroundColor: darkMode ? darkModeBg : lightModeBg,
+        leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.menu_outlined,
+              color: color,
+            )),
         title: const SizedBox(width: 190),
         actions: [
           IconButton(
@@ -40,8 +47,16 @@ class _CounterPageState extends State<CounterPage> {
                   darkMode = !darkMode;
                 });
               },
-              icon: const Icon(Icons.format_paint_outlined)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+              icon: const Icon(
+                Icons.format_paint_outlined,
+                color: color,
+              )),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.add,
+                color: color,
+              )),
         ],
       ),
       body: ListView(
