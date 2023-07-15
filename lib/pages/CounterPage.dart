@@ -2,6 +2,9 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:laundry_counter/pages/colors.dart';
+
+bool darkMode = false;
 
 class CounterPage extends StatefulWidget {
   const CounterPage({super.key});
@@ -25,13 +28,19 @@ class _CounterPageState extends State<CounterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: darkMode ? darkModeBg : lightModeBg,
       appBar: AppBar(
         leading:
             IconButton(onPressed: () {}, icon: const Icon(Icons.menu_outlined)),
         title: const SizedBox(width: 190),
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.format_paint_outlined)),
+              onPressed: () {
+                setState(() {
+                  darkMode = !darkMode;
+                });
+              },
+              icon: const Icon(Icons.format_paint_outlined)),
           IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
         ],
       ),
@@ -69,7 +78,10 @@ class _CounterPageState extends State<CounterPage> {
         children: [
           Text(
             name,
-            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+            style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w500,
+                color: darkMode ? darkModeFg : lightModeFg),
           ),
           const SizedBox(
             height: 8.5,
@@ -77,7 +89,7 @@ class _CounterPageState extends State<CounterPage> {
           Container(
             height: 60.0,
             decoration: BoxDecoration(
-              border: Border.all(width: 3, color: const Color(0xFF69B7FF)),
+              border: Border.all(width: 3, color: color),
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Row(
@@ -94,7 +106,7 @@ class _CounterPageState extends State<CounterPage> {
                     }
                   },
                   child: Container(
-                    color: const Color(0xFF69B7FF),
+                    color: color,
                     width: 55,
                     alignment: Alignment.center,
                     child: const Icon(
@@ -106,7 +118,9 @@ class _CounterPageState extends State<CounterPage> {
                 ),
                 Text(
                   '${entry.value}',
-                  style: const TextStyle(fontSize: 22.0),
+                  style: TextStyle(
+                      fontSize: 22.0,
+                      color: (darkMode) ? darkModeFg : lightModeFg),
                 ),
                 InkWell(
                   onTap: () {
@@ -116,7 +130,7 @@ class _CounterPageState extends State<CounterPage> {
                     });
                   },
                   child: Container(
-                    color: const Color(0xFF69B7FF),
+                    color: color,
                     width: 55.0,
                     alignment: Alignment.center,
                     child: const Icon(
@@ -145,9 +159,12 @@ class _CounterPageState extends State<CounterPage> {
           top: 20.0, bottom: 20.0, left: 15.0, right: 15.0),
       child: Row(
         children: [
-          const Text(
+          Text(
             "TOTAL:",
-            style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 27,
+                fontWeight: FontWeight.bold,
+                color: darkMode ? darkModeFg : lightModeFg),
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.6,
@@ -162,12 +179,13 @@ class _CounterPageState extends State<CounterPage> {
     );
   }
 
+  //build save button for app.
   Container buildSave() {
     return Container(
-      margin: EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(10.0),
       child: ElevatedButton(
           onPressed: () {},
-          child: Center(
+          child: const Center(
             child: Text(
               "Save",
               style: TextStyle(fontSize: 20),
