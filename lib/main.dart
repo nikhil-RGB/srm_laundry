@@ -3,11 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:laundry_counter/pages/CounterPage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:laundry_counter/pages/models/BagDataModel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox("laundry_log");
+  Hive.registerAdapter(BagDataModelAdapter());
+  await Hive.openBox<BagDataModel>("laundry_log");
   runApp(const MyApp());
 }
 
