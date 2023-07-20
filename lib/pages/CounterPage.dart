@@ -1,9 +1,11 @@
 import 'dart:core';
 import 'dart:ffi';
-
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:laundry_counter/pages/colors.dart';
+import 'package:laundry_counter/pages/models/BagDataModel.dart';
 
 bool darkMode = false;
 
@@ -25,6 +27,14 @@ class _CounterPageState extends State<CounterPage> {
     "Bedsheets": 0,
     "Others": 0,
   };
+
+  int total = 0;
+  late Box<BagDataModel> laundryBox;
+  @override
+  void initState() {
+    super.initState();
+    laundryBox = Hive.box("laundry_log");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +179,7 @@ class _CounterPageState extends State<CounterPage> {
     for (var element in clothes.entries) {
       total += element.value;
     }
+    this.total = total;
     return Padding(
       padding: const EdgeInsets.only(
           top: 20.0, bottom: 20.0, left: 15.0, right: 15.0),
@@ -199,7 +210,9 @@ class _CounterPageState extends State<CounterPage> {
     return Container(
       margin: const EdgeInsets.all(10.0),
       child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            save();
+          },
           child: const Center(
             child: Text(
               "Save",
@@ -207,5 +220,33 @@ class _CounterPageState extends State<CounterPage> {
             ),
           )),
     );
+  }
+
+  BagDataModel createHiveObject() {
+    return BagDataModel(
+      pants: clothes["Pants/Bottoms"]!,
+      shirts: clothes["Shirts/Tops"]!,
+      tshirts: clothes["T-Shirts"]!,
+      shorts: clothes["Half-Pants/Shorts"]!,
+      towels: clothes["Towels"]!,
+      pillows: clothes["Pillow Covers"]!,
+      bedsheets: clothes["Bedsheets"]!,
+      others: clothes["Others"]!,
+      total: total,
+    );
+  }
+
+  //Gives the current date in DD/MM/YYYY format.
+  static String currentDate() {
+    DateTime today = DateTime.now();
+    String dateStr = "${today.day}-${today.month}-${today.year}";
+    return dateStr;
+  }
+
+  //Saves the current data to local storage via Hive
+  void save() {
+    laundryBox.put(currentDate(), createHiveObject());
+    Logger().w("Length=${laundryBox.keys.length}");
+    Logger().wtf("current entry=${laundryBox.get(currentDate())}");
   }
 }
