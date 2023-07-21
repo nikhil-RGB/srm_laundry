@@ -41,6 +41,7 @@ dependencies:
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.0
   logger: ^1.4.0
+  fluttertoast: ^8.2.2
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:laundry_counter/pages/DatePage.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
@@ -222,10 +223,21 @@ class _CounterPageState extends State<CounterPage> {
   //build save button for app.
   Container buildSave() {
     return Container(
+      padding: const EdgeInsets.all(15.0),
       margin: const EdgeInsets.all(10.0),
       child: ElevatedButton(
           onPressed: () {
             save();
+            Fluttertoast.showToast(
+                msg: "Entry Saved!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: darkMode ? lightModeBg : darkModeBg,
+                textColor: darkMode ? lightModeFg : darkModeFg,
+                fontSize: 16.0);
+            Navigator.push(
+                context, MaterialPageRoute(builder: ((context) => DatePage())));
           },
           child: const Center(
             child: Text(
