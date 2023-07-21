@@ -20,13 +20,42 @@ class _DatePageState extends State<DatePage> {
   @override
   Widget build(BuildContext context) {
     Iterable<String> keys = laundryBox.keys.cast();
-    return Scaffold(
-      backgroundColor: darkMode ? darkModeBg : lightModeBg,
-      body: ListView.builder(
-          itemCount: keys.length,
-          itemBuilder: ((context, index) {
-            return dateTile(keys.elementAt(index));
-          })),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: darkMode ? darkModeBg : lightModeBg,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_rounded,
+              color: color,
+            ),
+          ),
+          title: Text(
+            "All Entries",
+            style: TextStyle(
+                color: darkMode ? darkModeFg : lightModeFg,
+                fontSize: 24,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: (keys.length != 0)
+            ? ListView.builder(
+                itemCount: keys.length,
+                itemBuilder: ((context, index) {
+                  return dateTile(keys.elementAt(index));
+                }))
+            : Center(
+                child: Text(
+                  "Nothing to see here!",
+                  style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
+                ),
+              ),
+      ),
     );
   }
 
@@ -52,6 +81,7 @@ class _DatePageState extends State<DatePage> {
             );
           },
           child: ListTile(
+            leading: const SizedBox(width: 20),
             title: Center(
               child: Text(
                 key,
@@ -63,6 +93,15 @@ class _DatePageState extends State<DatePage> {
             ),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            trailing: IconButton(
+              color: Colors.redAccent,
+              icon: Icon(Icons.delete_forever_rounded),
+              onPressed: () {
+                setState(() {
+                  laundryBox.delete(key);
+                });
+              },
+            ),
           ),
         ),
       ),

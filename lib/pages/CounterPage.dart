@@ -68,9 +68,17 @@ class _CounterPageState extends State<CounterPage> {
                 color: color,
               )),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                //come here for refresh implementation
+                Iterable<String> keys = clothes.keys;
+                setState(() {
+                  for (String key in keys) {
+                    clothes[key] = 0;
+                  }
+                });
+              },
               icon: const Icon(
-                Icons.add,
+                Icons.refresh,
                 color: color,
               )),
         ],
