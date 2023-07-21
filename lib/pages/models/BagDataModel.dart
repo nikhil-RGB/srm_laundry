@@ -21,14 +21,15 @@ class BagDataModel extends HiveObject {
   int others;
   @HiveField(8)
   int total;
-  BagDataModel(
-      {required this.pants,
-      required this.shirts,
-      required this.tshirts,
-      required this.shorts,
-      required this.towels,
-      required this.pillows,
-      required this.bedsheets,
-      required this.others,
-      required this.total});
+  BagDataModel({
+    this.pants = 0,
+    this.shirts = 0,
+    this.tshirts = 0,
+    this.shorts = 0,
+    this.towels = 0,
+    this.pillows = 0,
+    this.bedsheets = 0,
+    this.others = 0,
+    this.total = 0,
+  });
 }

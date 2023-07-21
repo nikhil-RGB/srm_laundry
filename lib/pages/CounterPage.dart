@@ -1,32 +1,25 @@
 import 'dart:core';
-import 'dart:ffi';
+import 'package:laundry_counter/pages/DatePage.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:laundry_counter/pages/colors.dart';
 import 'package:laundry_counter/pages/models/BagDataModel.dart';
 
 bool darkMode = false;
 
+// ignore: must_be_immutable
 class CounterPage extends StatefulWidget {
-  const CounterPage({super.key});
+  BagDataModel model;
+  CounterPage({super.key}) : model = BagDataModel();
+  CounterPage.openPrevious({super.key, required this.model});
 
   @override
   State<CounterPage> createState() => _CounterPageState();
 }
 
 class _CounterPageState extends State<CounterPage> {
-  Map<String, int> clothes = {
-    "Pants/Bottoms": 0,
-    "Shirts/Tops": 0,
-    "T-Shirts": 0,
-    "Half-Pants/Shorts": 0,
-    "Towels": 0,
-    "Pillow Covers": 0,
-    "Bedsheets": 0,
-    "Others": 0,
-  };
+  late Map<String, int> clothes;
 
   int total = 0;
   late Box<BagDataModel> laundryBox;
@@ -34,6 +27,16 @@ class _CounterPageState extends State<CounterPage> {
   void initState() {
     super.initState();
     laundryBox = Hive.box("laundry_log");
+    clothes = {
+      "Pants/Bottoms": widget.model.pants,
+      "Shirts/Tops": widget.model.shirts,
+      "T-Shirts": widget.model.tshirts,
+      "Half-Pants/Shorts": widget.model.shorts,
+      "Towels": widget.model.towels,
+      "Pillow Covers": widget.model.pillows,
+      "Bedsheets": widget.model.bedsheets,
+      "Others": widget.model.others,
+    };
   }
 
   @override
@@ -44,7 +47,10 @@ class _CounterPageState extends State<CounterPage> {
         elevation: 0,
         backgroundColor: darkMode ? darkModeBg : lightModeBg,
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => DatePage())));
+            },
             icon: const Icon(
               Icons.menu_outlined,
               color: color,
@@ -247,6 +253,6 @@ class _CounterPageState extends State<CounterPage> {
   void save() {
     laundryBox.put(currentDate(), createHiveObject());
     Logger().w("Length=${laundryBox.keys.length}");
-    Logger().wtf("current entry=${laundryBox.get(currentDate())}");
+    Logger().wtf("current entry= Pants${laundryBox.get(currentDate())!.pants}");
   }
 }
