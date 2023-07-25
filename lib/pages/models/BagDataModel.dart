@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:laundry_counter/pages/CounterPage.dart';
 part 'BagDataModel.g.dart';
 
 @HiveType(typeId: 0)
@@ -21,6 +22,11 @@ class BagDataModel extends HiveObject {
   int others;
   @HiveField(8)
   int total;
+  @HiveField(9)
+  String date;
+  @HiveField(10)
+  int bagNo;
+
   BagDataModel({
     this.pants = 0,
     this.shirts = 0,
@@ -31,5 +37,11 @@ class BagDataModel extends HiveObject {
     this.bedsheets = 0,
     this.others = 0,
     this.total = 0,
-  });
+    this.date = "",
+    this.bagNo = 0,
+  }) {
+    if (date.isEmpty) {
+      date = currentDate();
+    }
+  }
 }

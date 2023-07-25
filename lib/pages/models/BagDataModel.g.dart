@@ -26,13 +26,15 @@ class BagDataModelAdapter extends TypeAdapter<BagDataModel> {
       bedsheets: fields[6] as int,
       others: fields[7] as int,
       total: fields[8] as int,
+      date: fields[9] as String,
+      bagNo: fields[10] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, BagDataModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.pants)
       ..writeByte(1)
@@ -50,7 +52,11 @@ class BagDataModelAdapter extends TypeAdapter<BagDataModel> {
       ..writeByte(7)
       ..write(obj.others)
       ..writeByte(8)
-      ..write(obj.total);
+      ..write(obj.total)
+      ..writeByte(9)
+      ..write(obj.date)
+      ..writeByte(10)
+      ..write(obj.bagNo);
   }
 
   @override

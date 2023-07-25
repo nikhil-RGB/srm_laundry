@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
+import 'package:laundry_counter/HiveObserver.dart';
 import 'package:laundry_counter/pages/CounterPage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:laundry_counter/pages/models/BagDataModel.dart';
@@ -10,6 +11,11 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(BagDataModelAdapter());
   await Hive.openBox<BagDataModel>("laundry_log");
+  await Hive.openBox("darkMode");
+
+  // Add HiveObserver to listen for app lifecycle events
+  WidgetsBinding.instance.addObserver(HiveObserver());
+
   runApp(const MyApp());
 }
 

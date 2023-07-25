@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:laundry_counter/pages/DatePage.dart';
 import 'package:logger/logger.dart';
@@ -21,13 +22,22 @@ class CounterPage extends StatefulWidget {
 
 class _CounterPageState extends State<CounterPage> {
   late Map<String, int> clothes;
+  late String date;
+  late TextEditingController _bagController;
 
   int total = 0;
   late Box<BagDataModel> laundryBox;
+  late Box colorBox;
   @override
   void initState() {
     super.initState();
     laundryBox = Hive.box("laundry_log");
+    colorBox = Hive.box("darkMode");
+    if (colorBox.isEmpty) {
+      colorBox.put("darkMode", false);
+    } else {
+      darkMode = colorBox.get("darkMode");
+    }
     clothes = {
       "Pants/Bottoms": widget.model.pants,
       "Shirts/Tops": widget.model.shirts,
@@ -38,6 +48,8 @@ class _CounterPageState extends State<CounterPage> {
       "Bedsheets": widget.model.bedsheets,
       "Others": widget.model.others,
     };
+    date = widget.model.date;
+    _bagController = TextEditingController(text: "${widget.model.bagNo}");
   }
 
   @override
@@ -63,6 +75,7 @@ class _CounterPageState extends State<CounterPage> {
                 setState(() {
                   darkMode = !darkMode;
                 });
+                colorBox.put("darkMode", darkMode);
               },
               icon: const Icon(
                 Icons.format_paint_outlined,
@@ -86,6 +99,10 @@ class _CounterPageState extends State<CounterPage> {
       ),
       body: ListView(
         children: [
+          const SizedBox(
+            height: 10,
+          ),
+          dateBar(),
           const SizedBox(
             height: 10,
           ),
@@ -258,21 +275,54 @@ class _CounterPageState extends State<CounterPage> {
       pillows: clothes["Pillow Covers"]!,
       bedsheets: clothes["Bedsheets"]!,
       others: clothes["Others"]!,
+      date: date,
+      bagNo: int.parse(_bagController.text),
       total: total,
     );
   }
 
-  //Gives the current date in DD/MM/YYYY format.
-  static String currentDate() {
-    DateTime today = DateTime.now();
-    String dateStr = "${today.day}-${today.month}-${today.year}";
-    return dateStr;
-  }
-
   //Saves the current data to local storage via Hive
   void save() {
-    laundryBox.put(currentDate(), createHiveObject());
+    laundryBox.put(date, createHiveObject());
     Logger().w("Length=${laundryBox.keys.length}");
     Logger().wtf("current entry= Pants${laundryBox.get(currentDate())!.pants}");
   }
+
+  Widget dateBar() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        children: [
+          Text(
+            date,
+            style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
+          ),
+          const SizedBox(width: 20),
+          SizedBox(
+            width: 60,
+            height: 30,
+            child: TextField(
+              controller: _bagController,
+              style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+//Gives the current date in DD/MM/YYYY format.
+String currentDate() {
+  DateTime today = DateTime.now();
+  String dateStr = "${today.day}-${today.month}-${today.year}";
+  return dateStr;
+}
+
+String dummyDate(String date) {
+  return date;
 }
