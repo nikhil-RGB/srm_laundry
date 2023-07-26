@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     
    <application
-        android:label="Laundry Managerr"
+        android:label="Laundry Manager"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
