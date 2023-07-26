@@ -2,8 +2,6 @@ import 'dart:core';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:laundry_counter/pages/DatePage.dart';
-// ignore: unused_import
-import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:laundry_counter/pages/colors.dart';
@@ -247,6 +245,12 @@ class _CounterPageState extends State<CounterPage> {
       padding: const EdgeInsets.all(15.0),
       margin: const EdgeInsets.all(10.0),
       child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            backgroundColor: color,
+          ),
           onPressed: () {
             save();
             Fluttertoast.showToast(
@@ -260,10 +264,16 @@ class _CounterPageState extends State<CounterPage> {
             Navigator.push(
                 context, MaterialPageRoute(builder: ((context) => DatePage())));
           },
-          child: const Center(
-            child: Text(
-              "Save",
-              style: TextStyle(fontSize: 20),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: const Center(
+              child: Text(
+                "Save",
+                style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
             ),
           )),
     );
@@ -289,8 +299,6 @@ class _CounterPageState extends State<CounterPage> {
   //Saves the current data to local storage via Hive
   void save() {
     laundryBox.put(date, createHiveObject());
-    // Logger().w("Length=${laundryBox.keys.length}");
-    // Logger().wtf("current entry= Pants${laundryBox.get(currentDate())!.pants}");
   }
 
   Widget dateBar() {
