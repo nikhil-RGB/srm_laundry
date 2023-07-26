@@ -26,6 +26,8 @@ class BagDataModel extends HiveObject {
   String date;
   @HiveField(10)
   int bagNo;
+  @HiveField(11)
+  String hostelName;
 
   BagDataModel({
     this.pants = 0,
@@ -39,6 +41,7 @@ class BagDataModel extends HiveObject {
     this.total = 0,
     this.date = "",
     this.bagNo = 0,
+    this.hostelName = "",
   }) {
     if (date.isEmpty) {
       date = currentDate();

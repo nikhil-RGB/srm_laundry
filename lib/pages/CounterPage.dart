@@ -2,7 +2,6 @@ import 'dart:core';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:laundry_counter/pages/DatePage.dart';
-import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:laundry_counter/pages/colors.dart';
@@ -24,6 +23,7 @@ class _CounterPageState extends State<CounterPage> {
   late Map<String, int> clothes;
   late String date;
   late TextEditingController _bagController;
+  late TextEditingController _nameController;
 
   int total = 0;
   late Box<BagDataModel> laundryBox;
@@ -50,6 +50,7 @@ class _CounterPageState extends State<CounterPage> {
     };
     date = widget.model.date;
     _bagController = TextEditingController(text: "${widget.model.bagNo}");
+    _nameController = TextEditingController(text: "${widget.model.hostelName}");
   }
 
   @override
@@ -106,6 +107,7 @@ class _CounterPageState extends State<CounterPage> {
           const SizedBox(
             height: 10,
           ),
+          nameField(_nameController, "Hostel Name"),
           buildCounter("Pants/Bottoms"),
           buildCounter("Shirts/Tops"),
           buildCounter("T-Shirts"),
@@ -243,6 +245,12 @@ class _CounterPageState extends State<CounterPage> {
       padding: const EdgeInsets.all(15.0),
       margin: const EdgeInsets.all(10.0),
       child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            backgroundColor: color,
+          ),
           onPressed: () {
             save();
             Fluttertoast.showToast(
@@ -256,10 +264,16 @@ class _CounterPageState extends State<CounterPage> {
             Navigator.push(
                 context, MaterialPageRoute(builder: ((context) => DatePage())));
           },
-          child: const Center(
-            child: Text(
-              "Save",
-              style: TextStyle(fontSize: 20),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: const Center(
+              child: Text(
+                "Save",
+                style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
             ),
           )),
     );
@@ -276,16 +290,15 @@ class _CounterPageState extends State<CounterPage> {
       bedsheets: clothes["Bedsheets"]!,
       others: clothes["Others"]!,
       date: date,
-      bagNo: int.parse(_bagController.text),
+      bagNo: int.parse("0" + _bagController.text),
       total: total,
+      hostelName: _nameController.text,
     );
   }
 
   //Saves the current data to local storage via Hive
   void save() {
     laundryBox.put(date, createHiveObject());
-    Logger().w("Length=${laundryBox.keys.length}");
-    Logger().wtf("current entry= Pants${laundryBox.get(currentDate())!.pants}");
   }
 
   Widget dateBar() {
@@ -293,15 +306,39 @@ class _CounterPageState extends State<CounterPage> {
       padding: const EdgeInsets.all(10.0),
       child: Row(
         children: [
+          const SizedBox(
+            width: 12.0,
+          ),
           Text(
             date,
             style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 160),
+          Text(
+            "Bag no.",
+            style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
+          ),
+          SizedBox(width: 10.0),
           SizedBox(
             width: 60,
             height: 30,
             child: TextField(
+              textAlign: TextAlign.center,
+              textAlignVertical: TextAlignVertical.center,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 5.0,
+                ),
+                isDense: true,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 1.0, color: color),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: 1.0, color: darkMode ? darkModeFg : lightModeFg),
+                ),
+              ),
               controller: _bagController,
               style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
               keyboardType: TextInputType.number,
@@ -310,6 +347,47 @@ class _CounterPageState extends State<CounterPage> {
               ],
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget nameField(TextEditingController controller, String label) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 150,
+            child: TextField(
+              textAlign: TextAlign.center,
+              textAlignVertical: TextAlignVertical.center,
+              decoration: InputDecoration(
+                hintStyle: TextStyle(
+                    color:
+                        (darkMode ? darkModeFg : lightModeFg).withAlpha(100)),
+                hintText: "Hostel Name",
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 5.0,
+                ),
+                isDense: true,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 1.0, color: color),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: 1.0, color: darkMode ? darkModeFg : lightModeFg),
+                ),
+              ),
+              controller: _nameController,
+              style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
+              keyboardType: TextInputType.name,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.singleLineFormatter
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -323,6 +401,6 @@ String currentDate() {
   return dateStr;
 }
 
-String dummyDate(String date) {
-  return date;
-}
+// String dummyDate(String date) {
+//   return date;
+// }
