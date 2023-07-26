@@ -44,3 +44,29 @@
  ## Contact
  If you have any questions, suggestions, or feedback regarding the Laundry Counter App, please feel free to contact the project maintainer at [javakingxi@gmail.com](javakingxi@gmail.com).
 Feel free to customize and enhance this documentation to accurately reflect the features, implementation details, and any additional information specific to your project
+
+## Screenshots
+
+<div align="center">
+  <img width="230" alt="dark1" align="left" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/4c6c28a9-603b-4bf8-9bd6-68335091d5f5.png">
+  
+  <img width="230" alt="dark2" align="center" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/f812ed96-26be-469c-95ae-76592e393c15.png">
+  
+  <img width="230" alt="entries_dark" align="right" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/482d1c63-63b1-4422-a78e-add51dd9fa32.png">
+</div>
+
+<br><br>
+
+<div align="center">
+  <img width="230" alt="light1" align="left" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/24cc3dcb-1534-4bee-809c-5c61e0c9c345.png">
+  
+  <img width="230" alt="light2" align="center" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/7609ebca-8aec-4084-b7ee-5419d3095ff3.png">
+  
+  <img width="230" alt="entries_light" align="right" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/c929a437-f95c-47fa-8700-5b52e1f9d11e.png">
+</div>
+
+
+
+
+
+
