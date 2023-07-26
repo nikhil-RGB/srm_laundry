@@ -284,8 +284,8 @@ class _CounterPageState extends State<CounterPage> {
   //Saves the current data to local storage via Hive
   void save() {
     laundryBox.put(date, createHiveObject());
-    Logger().w("Length=${laundryBox.keys.length}");
-    Logger().wtf("current entry= Pants${laundryBox.get(currentDate())!.pants}");
+    // Logger().w("Length=${laundryBox.keys.length}");
+    // Logger().wtf("current entry= Pants${laundryBox.get(currentDate())!.pants}");
   }
 
   Widget dateBar() {
@@ -323,6 +323,6 @@ String currentDate() {
   return dateStr;
 }
 
-String dummyDate(String date) {
-  return date;
-}
+// String dummyDate(String date) {
+//   return date;
+// }
