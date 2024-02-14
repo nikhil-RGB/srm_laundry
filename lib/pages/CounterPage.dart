@@ -24,6 +24,7 @@ class _CounterPageState extends State<CounterPage> {
   late String date;
   late TextEditingController _bagController;
   late TextEditingController _nameController;
+  late TextEditingController _vendorController;
 
   int total = 0;
   late Box<BagDataModel> laundryBox;
@@ -51,6 +52,8 @@ class _CounterPageState extends State<CounterPage> {
     date = widget.model.date;
     _bagController = TextEditingController(text: "${widget.model.bagNo}");
     _nameController = TextEditingController(text: "${widget.model.hostelName}");
+    _vendorController =
+        TextEditingController(text: "${widget.model.vendorName}");
   }
 
   @override
@@ -87,6 +90,9 @@ class _CounterPageState extends State<CounterPage> {
                 //come here for refresh implementation
                 Iterable<String> keys = clothes.keys;
                 setState(() {
+                  _bagController.clear();
+                  _nameController.clear();
+                  _vendorController.clear();
                   for (String key in keys) {
                     clothes[key] = 0;
                   }
@@ -116,6 +122,13 @@ class _CounterPageState extends State<CounterPage> {
           buildCounter("Pillow Covers"),
           buildCounter("Bedsheets"),
           buildCounter("Others"),
+          const SizedBox(
+            height: 15,
+          ),
+          vendorField(),
+          const SizedBox(
+            height: 15,
+          ),
           buildTotalBar(),
           buildSave(),
           const SizedBox(
@@ -270,9 +283,10 @@ class _CounterPageState extends State<CounterPage> {
               child: Text(
                 "Save",
                 style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black),
+                  fontSize: 21,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
               ),
             ),
           )),
@@ -293,6 +307,7 @@ class _CounterPageState extends State<CounterPage> {
       bagNo: int.parse("0" + _bagController.text),
       total: total,
       hostelName: _nameController.text,
+      vendorName: _vendorController.text,
     );
   }
 
@@ -389,6 +404,49 @@ class _CounterPageState extends State<CounterPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget vendorField() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 350,
+              child: TextField(
+                textAlign: TextAlign.center,
+                textAlignVertical: TextAlignVertical.center,
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(
+                      color:
+                          (darkMode ? darkModeFg : lightModeFg).withAlpha(100)),
+                  hintText: "Vendor Name",
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 5.0,
+                  ),
+                  isDense: true,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1.0, color: color),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 2.0, color: darkMode ? darkModeFg : lightModeFg),
+                  ),
+                ),
+                controller: _vendorController,
+                style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
+                keyboardType: TextInputType.name,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.singleLineFormatter
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
