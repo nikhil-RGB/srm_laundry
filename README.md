@@ -47,23 +47,28 @@ Feel free to customize and enhance this documentation to accurately reflect the 
 
 ## Screenshots
 
-<div align="center">
-  <img width="230" alt="dark1" align="left" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/4c6c28a9-603b-4bf8-9bd6-68335091d5f5.png">
-  
-  <img width="230" alt="dark2" align="center" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/f812ed96-26be-469c-95ae-76592e393c15.png">
-  
-  <img width="230" alt="entries_dark" align="right" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/482d1c63-63b1-4422-a78e-add51dd9fa32.png">
-</div>
+<img width="200" height="400" alt="image" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/83a3c93e-5965-40e8-b914-e79359d5f61e">
 
-<br><br>
+<br> <br> 
 
-<div align="center">
-  <img width="230" alt="light1" align="left" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/24cc3dcb-1534-4bee-809c-5c61e0c9c345.png">
-  
-  <img width="230" alt="light2" align="center" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/7609ebca-8aec-4084-b7ee-5419d3095ff3.png">
-  
-  <img width="230" alt="entries_light" align="right" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/c929a437-f95c-47fa-8700-5b52e1f9d11e.png">
-</div>
+<img width="200" height="400" alt="image" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/de3dbfa9-1c74-4f4a-98da-35f694ecbfe4">
+
+<br> <br> 
+
+<img width="200" height="400" alt="image" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/cb2115c6-075a-4157-8f69-fdaa8035ff83">
+
+<br> <br> 
+
+<img width="200" height="400" alt="image" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/12e8056f-41c2-4044-9fbe-984e0c050b14">
+
+<br> <br>
+
+<img width="200" height="400" alt="image" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/a28f3376-efc0-4f0e-959a-b876a6ca0020">
+
+<br> <br>
+
+<img width="200" height="400" alt="image" src="https://github.com/nikhil-RGB/srm_laundry/assets/68727041/6212da53-4cde-4903-99c9-47b49485abdb">
+
 
 
 
