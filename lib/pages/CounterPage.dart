@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:laundry_counter/pages/colors.dart';
 import 'package:laundry_counter/pages/models/BagDataModel.dart';
+import 'package:logger/logger.dart';
 
 bool darkMode = false;
 
@@ -25,7 +26,7 @@ class _CounterPageState extends State<CounterPage> {
   late TextEditingController _bagController;
   late TextEditingController _nameController;
   late TextEditingController _vendorController;
-
+  late Map<String, TextEditingController> _propertiesController;
   int total = 0;
   late Box<BagDataModel> laundryBox;
   late Box colorBox;
@@ -54,92 +55,104 @@ class _CounterPageState extends State<CounterPage> {
     _nameController = TextEditingController(text: "${widget.model.hostelName}");
     _vendorController =
         TextEditingController(text: "${widget.model.vendorName}");
+
+    _propertiesController = {};
+    for (MapEntry entry in widget.model.properties.entries) {
+      TextEditingController tc = TextEditingController();
+      tc.text = entry.value;
+      _propertiesController[entry.key] = tc;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: darkMode ? darkModeBg : lightModeBg,
-      appBar: AppBar(
-        elevation: 0,
+    return SafeArea(
+      child: Scaffold(
         backgroundColor: darkMode ? darkModeBg : lightModeBg,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: ((context) => DatePage())));
-            },
-            icon: const Icon(
-              Icons.menu_outlined,
-              color: color,
-            )),
-        title: const SizedBox(width: 190),
-        actions: [
-          IconButton(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: darkMode ? darkModeBg : lightModeBg,
+          leading: IconButton(
               onPressed: () {
-                setState(() {
-                  darkMode = !darkMode;
-                });
-                colorBox.put("darkMode", darkMode);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => DatePage())));
               },
               icon: const Icon(
-                Icons.format_paint_outlined,
+                Icons.menu_outlined,
                 color: color,
               )),
-          IconButton(
-              onPressed: () {
-                //come here for refresh implementation
-                Iterable<String> keys = clothes.keys;
-                setState(() {
-                  _bagController.clear();
-                  _nameController.clear();
-                  _vendorController.clear();
-                  for (String key in keys) {
-                    clothes[key] = 0;
-                  }
-                });
-              },
-              icon: const Icon(
-                Icons.refresh,
-                color: color,
-              )),
-        ],
-      ),
-      body: ListView(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          dateBar(),
-          const SizedBox(
-            height: 10,
-          ),
-          nameField(_nameController, "Hostel Name"),
-          buildCounter("Pants/Bottoms"),
-          buildCounter("Shirts/Tops"),
-          buildCounter("T-Shirts"),
-          buildCounter("Half-Pants/Shorts"),
-          buildCounter("Towels"),
-          buildCounter("Pillow Covers"),
-          buildCounter("Bedsheets"),
-          buildCounter("Others"),
-          const SizedBox(
-            height: 15,
-          ),
-          vendorField(),
-          const SizedBox(
-            height: 15,
-          ),
-          buildTotalBar(),
-          buildSave(),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
+          title: const SizedBox(width: 190),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    darkMode = !darkMode;
+                  });
+                  colorBox.put("darkMode", darkMode);
+                },
+                icon: const Icon(
+                  Icons.format_paint_outlined,
+                  color: color,
+                )),
+            IconButton(
+                onPressed: () {
+                  //come here for refresh implementation
+                  Iterable<String> keys = clothes.keys;
+                  setState(() {
+                    _bagController.clear();
+                    _nameController.clear();
+                    _vendorController.clear();
+                    for (String key in keys) {
+                      clothes[key] = 0;
+                    }
+                    for (MapEntry entry in _propertiesController.entries) {
+                      (entry.value as TextEditingController).clear();
+                    }
+                  });
+                },
+                icon: const Icon(
+                  Icons.refresh,
+                  color: color,
+                )),
+          ],
+        ),
+        body: ListView(
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            dateBar(),
+            const SizedBox(
+              height: 10,
+            ),
+            nameField(_nameController, "Hostel Name"),
+            buildCounter("Pants/Bottoms", context),
+            buildCounter("Shirts/Tops", context),
+            buildCounter("T-Shirts", context),
+            buildCounter("Half-Pants/Shorts", context),
+            buildCounter("Towels", context),
+            buildCounter("Pillow Covers", context),
+            buildCounter("Bedsheets", context),
+            buildCounter("Others", context),
+            const SizedBox(
+              height: 15,
+            ),
+            vendorField(),
+            const SizedBox(
+              height: 15,
+            ),
+            buildTotalBar(),
+            buildSave(),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget buildCounter(String name) {
+  Widget buildCounter(String name, BuildContext context) {
     //The particular laundry entry for which this counter is being built
     MapEntry<String, int> entry =
         clothes.entries.firstWhere((element) => element.key == name);
@@ -147,13 +160,30 @@ class _CounterPageState extends State<CounterPage> {
       padding: const EdgeInsets.all(15.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            name,
-            style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w500,
-                color: darkMode ? darkModeFg : lightModeFg),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w500,
+                    color: darkMode ? darkModeFg : lightModeFg),
+              ),
+              // SizedBox(
+              //   width: 2,
+              // ),
+              IconButton(
+                onPressed: () {
+                  openDialog(context, name);
+                },
+                icon: Icon(Icons.info_outline_rounded),
+                color: Colors.blue,
+              ),
+            ],
           ),
           const SizedBox(
             height: 8.5,
@@ -294,6 +324,9 @@ class _CounterPageState extends State<CounterPage> {
   }
 
   BagDataModel createHiveObject() {
+    Map<String, String> props = _propertiesController.map((key, value) {
+      return MapEntry(key, value.text);
+    });
     return BagDataModel(
       pants: clothes["Pants/Bottoms"]!,
       shirts: clothes["Shirts/Tops"]!,
@@ -308,6 +341,7 @@ class _CounterPageState extends State<CounterPage> {
       total: total,
       hostelName: _nameController.text,
       vendorName: _vendorController.text,
+      properties: props,
     );
   }
 
@@ -328,7 +362,7 @@ class _CounterPageState extends State<CounterPage> {
             date,
             style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
           ),
-          const SizedBox(width: 160),
+          const SizedBox(width: 138),
           Text(
             "Bag no.",
             style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
@@ -408,46 +442,89 @@ class _CounterPageState extends State<CounterPage> {
     );
   }
 
+  //vendor input field
   Widget vendorField() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 350,
-              child: TextField(
-                textAlign: TextAlign.center,
-                textAlignVertical: TextAlignVertical.center,
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(
-                      color:
-                          (darkMode ? darkModeFg : lightModeFg).withAlpha(100)),
-                  hintText: "Vendor Name",
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: 8.0,
-                    horizontal: 5.0,
-                  ),
-                  isDense: true,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 1.0, color: color),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 2.0, color: darkMode ? darkModeFg : lightModeFg),
-                  ),
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 280,
+            child: TextField(
+              textAlign: TextAlign.center,
+              textAlignVertical: TextAlignVertical.center,
+              decoration: InputDecoration(
+                hintStyle: TextStyle(
+                    color:
+                        (darkMode ? darkModeFg : lightModeFg).withAlpha(100)),
+                hintText: "Vendor Name",
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 5.0,
                 ),
-                controller: _vendorController,
-                style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
-                keyboardType: TextInputType.name,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.singleLineFormatter
-                ],
+                isDense: true,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 1.0, color: color),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: 2.0, color: darkMode ? darkModeFg : lightModeFg),
+                ),
               ),
+              controller: _vendorController,
+              style: TextStyle(color: darkMode ? darkModeFg : lightModeFg),
+              keyboardType: TextInputType.name,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.singleLineFormatter
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //Opens a dialog to input description for items
+  void openDialog(BuildContext context, String name) {
+    Color bgCol = darkMode ? darkModeBg : lightModeBg;
+    Color fgCol = darkMode ? darkModeFg : lightModeFg;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: bgCol,
+          title: Text('Notes for $name',
+              style: TextStyle(
+                color: fgCol,
+              )),
+          content: TextField(
+            controller: _propertiesController[name],
+            decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: fgCol), // Change the color here
+                ),
+                hintText: "Details for $name",
+                hintStyle: TextStyle(
+                  color: fgCol,
+                )),
+            maxLines: 6,
+            style: TextStyle(color: fgCol, backgroundColor: bgCol),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Ok',
+                style: TextStyle(color: fgCol),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -462,3 +539,5 @@ String currentDate() {
 // String dummyDate(String date) {
 //   return date;
 // }
+
+

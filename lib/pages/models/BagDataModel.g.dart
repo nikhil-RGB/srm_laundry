@@ -30,7 +30,8 @@ class BagDataModelAdapter extends TypeAdapter<BagDataModel> {
       bagNo: fields[10] as int,
       hostelName: fields[11] as String,
       vendorName: fields[12] as String,
-    )..properties = (fields[13] as Map?)?.cast<String, String>();
+      properties: (fields[13] as Map).cast<String, String>(),
+    );
   }
 
   @override
